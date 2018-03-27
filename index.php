@@ -17,124 +17,89 @@
   <section class="container">
     <div class="columns">
 
-      <div class="column is-3">
-        <aside class="controls">
+      <div class="column controls">
 
-          <p class="controls-label">
-            Maak selectie
-          </p>
-
-          <div class='select-form'>
-
-            <!-- Schooljaar dropdown -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Jaar</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select class="year-select">
-                        <option>Maak een keuze</option>
-                        <option>2016-2017</option>
-                        <option>2017-2018</option>
-                        <option>2018-2019</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <!-- Schooljaar dropdown -->
+        <div class="field">
+          <label class="label">Jaar</label>
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select class="year-select" tabindex="1">
+                <option value='0'>Maak een keuze</option>
+                <option>2016-2017</option>
+                <option>2017-2018</option>
+                <option>2018-2019</option>
+              </select>
             </div>
-
-            <!-- Klas dropdown -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Klas</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select class="class-select">
-                        <option>Maak een keuze</option>
-                        <?php
-                          $classes = get_classes();
-                          foreach ($classes as $class) {
-                            echo '<option value="'.$class->kl_id.'">'.$class->kl_code.'</option>';
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Leerling dropdown -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Leerling</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select class="student-select" disabled>
-                        <option>Kies een klas</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <span class="icon is-small is-left">
+              <i class="fa fa-calendar"></i>
+            </span>
           </div>
+        </div>
 
-          <a class="button is-success is-block is-large confirm-student" href="#" disabled>Opslaan</a>
+        <!-- Klas dropdown -->
+        <div class="field">
+          <label class="label">Klas</label>
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select class="class-select" tabindex="1">
+                <option value='0'>Maak een keuze</option>
+                <?php
+                $classes = get_classes();
+                var_dump($classes);
+                foreach ($classes as $class) {
+                  echo '<option value="'.$class->kl_id.'">'.$class->kl_code.'</option>';
+                }
+                ?>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
+              <i class="fa fa-users"></i>
+            </span>
+          </div>
+        </div>
 
-        </aside>
+        <!-- Leerling dropdown -->
+        <div class="field">
+          <label class="label">Leerling</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select class="student-select" tabindex="1" disabled>
+                <option>Kies eerst een klas</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <a class="button is-success is-block confirm-student" href="#" tabindex="999" disabled>Opslaan</a>
 
       </div>
 
-      <div class="column is-9">
-        <div class="box content">
+      <div class="column content is-9">
 
-          <!-- Leerling naam -->
-          <div class="table-heading">
-            <h4 class="title">Selecteer een klas en leerling om te beginnen</h4>
-          </div>
+        <h4 class="title">Selecteer een klas en leerling om te beginnen</h4>
 
-          <!-- Tabel form, of "grid" -->
+        <div class="box">
           <table class="table">
             <thead>
               <tr>
                 <th>Gipvak</th>
                 <th>Score</th>
-                <th>Waardering</th>
+                <th class='rating-head'>Waardering</th>
                 <th>Opmerking</th>
               </tr>
             </thead>
             <tbody class="gip-table">
-
+              <!-- Wordt volledig via JS opgevuld -->
             </tbody>
           </table>
-
-
         </div>
+
       </div>
 
     </div>
   </section>
-  <footer class="footer">
-    <div class="container">
-      <div class="content has-text-centered">
-        <p>
-          ~
-        </p>
-      </div>
-    </div>
-  </footer>
+
   <script async type="text/javascript" src="./js/script.js"></script>
 </body>
 </html>

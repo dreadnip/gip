@@ -27,6 +27,7 @@ function get_gipvakken_by_class($class_id)
 function get_classes()
 {
 	$db = new PDO("sqlite:".__DIR__ ."/gip.db");
+	var_dump($db);
 	$sql = "SELECT * FROM klas";
 	$result = $db->query($sql)->fetchAll(PDO::FETCH_CLASS);
 	$db = null;
@@ -55,30 +56,27 @@ function get_gipevaluaties($student_id)
 	return $result;
 }
 
-function save($student_id, $evaluaties)
+function save($data)
 {
-
-}
-
-function add_user($email, $password, $status, $hash, $first_name, $last_name){
-	$db = new PDO("sqlite:".__DIR__ ."/../../data/dashboard_db.sqlite");
-	$stmt = $db->prepare("INSERT INTO users VALUES (null, :password, :email, :status, :hash, :first_name, :last_name)");
-	$stmt->bindParam(':client_id', $client_id);
-	$stmt->bindParam(':email', $email);
-	$stmt->bindParam(':password', $password);
-	$stmt->bindParam(':status', $status);
-	$stmt->bindParam(':hash', $hash);
-	$stmt->bindParam(':first_name', $first_name);
-	$stmt->bindParam(':last_name', $last_name);
+	$db = new PDO("sqlite:".__DIR__ ."/gip.db");
+	//erase old values
+	$student_id = $data[0]->student_id;
+	$stmt = $db->prepare("DELETE FROM gipevaluatie WHERE ge_leerling_fk = :student_id");
+	$stmt->bindParam(':student_id', $student_id);
 	$stmt->execute();
-	return $db->lastInsertId(); //user id just created
-	$db = null;
-}
 
-function complete_client_setup($client_id){
-	$db = new PDO("sqlite:".__DIR__ ."/../../data/dashboard_db.sqlite");
-	$stmt = $db->prepare("UPDATE clients SET cl_setup_complete = 1 WHERE cl_id = :client_id");
-	$stmt->bindParam(':client_id', $client_id);
-	$stmt->execute();
+	//begin insert new
+	$db->beginTransaction ();
+	$stmt = $db->prepare("INSERT INTO gipevaluatie VALUES (null, :student_id, :gipvak_id, :date, :score, :note)");
+	foreach ($data as $row) {
+	    $stmt->bindParam(':student_id', $row->student_id);
+	    $stmt->bindParam(':gipvak_id', $row->gipvak_id);
+	    $stmt->bindValue(':date', time());
+	    $stmt->bindParam(':score', $row->score);
+	    $stmt->bindParam(':note', $row->note);
+	    $stmt->execute();
+	}
+	$result = $db->commit();
 	$db = null;
+	return $result;
 }
